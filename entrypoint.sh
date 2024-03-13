@@ -40,6 +40,10 @@ mkdir -p ./${INPUT_ALLURE_HISTORY}
 if [[ ${INPUT_REPORT_URL} != '' ]]; then
     S3_WEBSITE_URL="${INPUT_REPORT_URL}"
 fi
+
+if [[ ${INPUT_MATRIX_DIR} != '' ]]; then
+    INPUT_GITHUB_RUN_NUM="${INPUT_GITHUB_RUN_NUM}-${INPUT_MATRIX_DIR}"
+fi
 #echo "executor.json"
 echo '{"name":"GitHub Actions","type":"github","reportName":"Allure Report with history",' > executor.json
 echo "\"url\":\"${GITHUB_PAGES_WEBSITE_URL}\"," >> executor.json # ???

@@ -37,6 +37,10 @@ inputs:
     description: 'Destination for latest report'
     required: false
     default: 'latest'
+  matrix_dir:
+    description: 'Directory to adjust for matrix runs'
+    required: false
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
