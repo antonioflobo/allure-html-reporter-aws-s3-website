@@ -44,6 +44,9 @@ fi
 if [[ ${INPUT_MATRIX_DIR} != '' ]]; then
     INPUT_GITHUB_RUN_NUM="${INPUT_COMPONENT}/${INPUT_GITHUB_RUN_NUM}/${INPUT_MATRIX_DIR}"
 fi
+
+mkdir -p ./${INPUT_ALLURE_HISTORY}/${INPUT_GITHUB_RUN_NUM}
+
 #echo "executor.json"
 echo '{"name":"GitHub Actions","type":"github","reportName":"Allure Report with history",' > executor.json
 echo "\"url\":\"${GITHUB_PAGES_WEBSITE_URL}\"," >> executor.json # ???
