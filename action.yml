@@ -41,6 +41,10 @@ inputs:
     description: 'Directory to adjust for matrix runs'
     required: false
     default: ''
+  component:
+    description: 'Component name'
+    required: false
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
