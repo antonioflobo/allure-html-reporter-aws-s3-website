@@ -37,9 +37,9 @@ unset JAVA_HOME
 
 mkdir -p ./${INPUT_ALLURE_HISTORY}
 
-if [[ ${INPUT_REPORT_URL} != '' ]]; then
-    S3_WEBSITE_URL="${INPUT_REPORT_URL}"
-fi
+# if [[ ${INPUT_REPORT_URL} != '' ]]; then
+#     S3_WEBSITE_URL="${INPUT_REPORT_URL}"
+# fi
 
 if [[ ${INPUT_MATRIX_DIR} != '' ]]; then
     INPUT_GITHUB_RUN_NUM="${INPUT_COMPONENT}/${INPUT_VERSION}/${INPUT_GITHUB_RUN_NUM}/${INPUT_MATRIX_DIR}"
@@ -57,7 +57,9 @@ echo "\"buildName\":\"GitHub Actions Run #${INPUT_GITHUB_RUN_ID}\",\"buildOrder\
 mv ./executor.json ./${INPUT_ALLURE_RESULTS}
 
 #environment.properties
-echo "URL=${S3_WEBSITE_URL}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
+echo "COMPONENT=${INPUT_COMPONENT}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
+echo "VERSION=${INPUT_VERSION}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
+echo "GITHUB_RUN=${INPUT_GITHUB_SERVER_URL}/${INPUT_GITHUB_REPO}/actions/runs/${INPUT_GITHUB_RUN_ID}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
 
 
 ls -l ${INPUT_ALLURE_RESULTS}
@@ -69,6 +71,9 @@ mkdir -p ./${INPUT_ALLURE_RESULTS}/history
 # convert INPUT_LATEST_DEST to URL safe string, lowercase, replace spaces with dashes
 # example: "Desktop Chrome" -> "desktop-chrome"
 LATEST_URL=$(echo ${INPUT_LATEST_DEST} | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
+
+echo "LATEST_URL: ${LATEST_URL}"
+
 sh -c "aws s3 cp s3://${AWS_S3_BUCKET}/${LATEST_URL}/history ./${INPUT_ALLURE_RESULTS}/history \
               --no-progress \
               --recursive"
@@ -144,6 +149,10 @@ ${AWS_SECRET_ACCESS_KEY}
 ${AWS_REGION}
 text
 EOF
+
+
+# 
+echo "DEST_DIR: ${DEST_DIR}"
 
 # Sync using our dedicated profile and suppress verbose messages.
 # All other flags are optional via the `args:` directive.
