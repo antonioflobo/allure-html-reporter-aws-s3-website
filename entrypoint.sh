@@ -107,7 +107,7 @@ sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/
     filePath=$(aws s3 ls s3://${AWS_S3_BUCKET}/${line}/ --recursive | grep 'index.html' | sort | tail -n 1 | awk '{print $NF}')
     if [ ! -z ${filePath} ]; then
       echo ${filePath}
-      echo "├── <a href="./"${line}"/">Latest Test Result for Component ${line}</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html; 
+      echo "├── <a href="./"${filePath}"/">Latest Test Result for Component ${line}</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html; 
     fi
     done;
 echo "</html>" >> ./${INPUT_ALLURE_HISTORY}/index.html;
