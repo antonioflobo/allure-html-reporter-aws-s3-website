@@ -104,7 +104,7 @@ sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/
     if [ "$line" = 'latest' ]; then
         continue
     fi
-    filePath=$(aws s3 ls s3://spqatestresults2/\"$line"/ --recursive | grep 'index.html' | sort | tail -n 1 | awk '{print $NF}')
+    filePath=$(aws s3 ls s3://spqatestresults2/\"$line\"/ --recursive | grep 'index.html' | sort | tail -n 1 | awk '{print $NF}')
     if [ ! -z "$filePath" ]; then
       echo "├── <a href="./"${line}"/">Latest Test Result for Component "${line}"</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html; 
     fi
