@@ -101,12 +101,13 @@ cat index-template.html > ./${INPUT_ALLURE_HISTORY}/index.html
 
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html;
 sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/.$//' | sort -nr | while read line; do
-    if [ "$line" = 'latest' ]; then
+    if [ ${line} = 'latest' ]; then
         continue
     fi
-    filePath=$(aws s3 ls s3://spqatestresults2/\"$line\"/ --recursive | grep 'index.html' | sort | tail -n 1 | awk '{print $NF}')
-    if [ ! -z "$filePath" ]; then
-      echo "├── <a href="./"${line}"/">Latest Test Result for Component "${line}"</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html; 
+    filePath=$(aws s3 ls s3://${AWS_S3_BUCKET}/${line}/ --recursive | grep 'index.html' | sort | tail -n 1 | awk '{print $NF}')
+    if [ ! -z ${filePath} ]; then
+      echo ${filePath}
+      echo "├── <a href="./"${line}"/">Latest Test Result for Component ${line}</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html; 
     fi
     done;
 echo "</html>" >> ./${INPUT_ALLURE_HISTORY}/index.html;
