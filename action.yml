@@ -49,6 +49,10 @@ inputs:
     description: 'Component version'
     required: false
     default: ''
+  project:
+    description: 'Project name'
+    required: false
+    default: 'snowman'
 runs:
   using: 'docker'
   image: 'Dockerfile'
