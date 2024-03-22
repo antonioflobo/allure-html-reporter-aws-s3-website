@@ -35,14 +35,12 @@ EOF
 
 unset JAVA_HOME
 
+printenv
+
 mkdir -p ./${INPUT_ALLURE_HISTORY}
 
-# if [[ ${INPUT_REPORT_URL} != '' ]]; then
-#     S3_WEBSITE_URL="${INPUT_REPORT_URL}"
-# fi
-
 if [[ ${INPUT_MATRIX_DIR} != '' ]]; then
-    INPUT_GITHUB_RUN_NUM="${INPUT_COMPONENT}/${INPUT_VERSION}/${INPUT_GITHUB_RUN_NUM}/${INPUT_MATRIX_DIR}"
+    INPUT_GITHUB_RUN_NUM="${PROJECT}/${INPUT_COMPONENT}/${INPUT_VERSION}/${INPUT_GITHUB_RUN_NUM}/${INPUT_MATRIX_DIR}"
 fi
 
 mkdir -p ./${INPUT_ALLURE_HISTORY}/${INPUT_GITHUB_RUN_NUM}
@@ -53,7 +51,6 @@ echo "\"url\":\"${GITHUB_PAGES_WEBSITE_URL}\"," >> executor.json # ???
 echo "\"reportUrl\":\"${GITHUB_PAGES_WEBSITE_URL}/${INPUT_GITHUB_RUN_NUM}/\"," >> executor.json
 echo "\"buildUrl\":\"https://github.com/${INPUT_GITHUB_REPO}/actions/runs/${INPUT_GITHUB_RUN_ID}\"," >> executor.json
 echo "\"buildName\":\"GitHub Actions Run #${INPUT_GITHUB_RUN_ID}\",\"buildOrder\":\"${INPUT_GITHUB_RUN_NUM}\"}" >> executor.json
-#cat executor.json
 mv ./executor.json ./${INPUT_ALLURE_RESULTS}
 
 #environment.properties
@@ -67,6 +64,7 @@ cat ./${INPUT_ALLURE_RESULTS}/history/history-trend.json && echo
 rm -rf ./${INPUT_ALLURE_RESULTS}/history
 echo "downloading latest history from s3"
 mkdir -p ./${INPUT_ALLURE_RESULTS}/history
+
 # INPUT_LATEST_DEST looks like "Desktop Chrome"
 # convert INPUT_LATEST_DEST to URL safe string, lowercase, replace spaces with dashes
 # example: "Desktop Chrome" -> "desktop-chrome"
