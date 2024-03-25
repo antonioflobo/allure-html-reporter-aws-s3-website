@@ -44,10 +44,12 @@ fi
 mkdir -p ./${INPUT_ALLURE_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
 #echo "executor.json"
-echo '{"name":"GitHub Actions","type":"github","reportName":"Allure Report with history",' > executor.json
-echo "\"url\":\"${GITHUB_PAGES_WEBSITE_URL}\"," >> executor.json # ???
-echo "\"reportUrl\":\"${GITHUB_PAGES_WEBSITE_URL}/${INPUT_GITHUB_RUN_NUM}/\"," >> executor.json
-echo "\"buildUrl\":\"https://github.com/${INPUT_GITHUB_REPO}/actions/runs/${INPUT_GITHUB_RUN_ID}\"," >> executor.json
+echo '{"name":"GitHub Actions","type":"github",' > executor.json
+echo "\"reportName\":\"Allure Report for test run from ${INPUT_PROJECT} for ${INPUT_COMPONENT} version ${INPUT_VERSION\"," >> executor.json
+echo "\"reportUrl\":\"https://${AWS_S3_BUCKET}.s3.amazonaws.com/${INPUT_GITHUB_RUN_NUM}/index.html\"," >> executor.json
+echo "\"reportUrl\":\"https://${AWS_S3_BUCKET}.s3.amazonaws.com/${INPUT_GITHUB_RUN_NUM}/index.html\"," >> executor.json
+echo "\"url\":\"https://${AWS_S3_BUCKET}.s3.amazonaws.com/${INPUT_GITHUB_RUN_NUM}/index.html\"," >> executor.json
+echo "\"buildUrl\":\"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${INPUT_GITHUB_RUN_ID}\"," >> executor.json
 echo "\"buildName\":\"GitHub Actions Run #${INPUT_GITHUB_RUN_ID}\",\"buildOrder\":\"${INPUT_GITHUB_RUN_NUM}\"}" >> executor.json
 mv ./executor.json ./${INPUT_ALLURE_RESULTS}
 
@@ -85,21 +87,12 @@ ls -l ${INPUT_ALLURE_REPORT}
 
 echo "copy allure-report to ${INPUT_ALLURE_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 cp -r ./${INPUT_ALLURE_REPORT}/. ./${INPUT_ALLURE_HISTORY}/${INPUT_GITHUB_RUN_NUM}
-# echo "copy allure-report history to /${INPUT_ALLURE_HISTORY}/last-history"
-# cp -r ./${INPUT_ALLURE_REPORT}/history/. ./${INPUT_ALLURE_HISTORY}/last-history
-
-# #echo "index.html"
-# echo "<!DOCTYPE html><meta charset=\"utf-8\"><meta http-equiv=\"refresh\" content=\"0; URL=${S3_WEBSITE_URL}/${INPUT_GITHUB_RUN_NUM}/\">" > ./${INPUT_ALLURE_HISTORY}/index.html # path
-# echo "<meta http-equiv=\"Pragma\" content=\"no-cache\"><meta http-equiv=\"Expires\" content=\"0\">" >> ./${INPUT_ALLURE_HISTORY}/index.html
-# cat ./${INPUT_ALLURE_HISTORY}/index.html
-
 cat index-template.html > ./${INPUT_ALLURE_HISTORY}/index.html
 
 # Get Latest results
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html;
 
-
-
+# Sort results by project and with the snowman project, sort by component
 sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/.$//' | sort -nr | while read line; do
     if [ ${line} = 'latest' ]; then
         continue
