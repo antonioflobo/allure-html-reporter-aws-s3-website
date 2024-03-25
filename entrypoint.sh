@@ -45,7 +45,7 @@ mkdir -p ./${INPUT_ALLURE_HISTORY}/${INPUT_GITHUB_RUN_NUM}
 
 #echo "executor.json"
 echo '{"name":"GitHub Actions","type":"github",' > executor.json
-echo "\"reportName\":\"Allure Report for test run from ${INPUT_PROJECT} for ${INPUT_COMPONENT} version ${INPUT_VERSION\"," >> executor.json
+echo "\"reportName\":\"Allure Report for test run from ${INPUT_PROJECT} for ${INPUT_COMPONENT} version ${INPUT_VERSION}\"," >> executor.json
 echo "\"reportUrl\":\"https://${AWS_S3_BUCKET}.s3.amazonaws.com/${INPUT_GITHUB_RUN_NUM}/index.html\"," >> executor.json
 echo "\"reportUrl\":\"https://${AWS_S3_BUCKET}.s3.amazonaws.com/${INPUT_GITHUB_RUN_NUM}/index.html\"," >> executor.json
 echo "\"url\":\"https://${AWS_S3_BUCKET}.s3.amazonaws.com/${INPUT_GITHUB_RUN_NUM}/index.html\"," >> executor.json
