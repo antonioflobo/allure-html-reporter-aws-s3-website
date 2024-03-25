@@ -37,6 +37,22 @@ inputs:
     description: 'Destination for latest report'
     required: false
     default: 'latest'
+  matrix_dir:
+    description: 'Directory to adjust for matrix runs'
+    required: false
+    default: ''
+  component:
+    description: 'Component name'
+    required: false
+    default: ''
+  version:
+    description: 'Component version'
+    required: false
+    default: ''
+  project:
+    description: 'Project name'
+    required: false
+    default: 'snowman'
 runs:
   using: 'docker'
   image: 'Dockerfile'
