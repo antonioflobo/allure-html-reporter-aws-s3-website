@@ -30,12 +30,10 @@
 	<a href=".">.</a><br>
 
 EOF
-          
-          
+         
 
 unset JAVA_HOME
 
-printenv
 
 mkdir -p ./${INPUT_ALLURE_HISTORY}
 
@@ -56,7 +54,7 @@ mv ./executor.json ./${INPUT_ALLURE_RESULTS}
 #environment.properties
 echo "COMPONENT=${INPUT_COMPONENT}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
 echo "VERSION=${INPUT_VERSION}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
-echo "GITHUB_RUN=${INPUT_GITHUB_SERVER_URL}/${INPUT_GITHUB_REPO}/actions/runs/${INPUT_GITHUB_RUN_ID}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
+echo "GITHUB_RUN=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${INPUT_GITHUB_RUN_ID}" >> ./${INPUT_ALLURE_RESULTS}/environment.properties
 
 
 ls -l ${INPUT_ALLURE_RESULTS}
@@ -123,7 +121,6 @@ sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/
 done;
 
 echo "</html>" >> ./${INPUT_ALLURE_HISTORY}/index.html;
-# cat ./${INPUT_ALLURE_HISTORY}/index.html
 
 echo "copy allure-results to ${INPUT_ALLURE_HISTORY}/${INPUT_GITHUB_RUN_NUM}"
 # delete the history folder from results before copying to history otherwise it will overwrite the history
