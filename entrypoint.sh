@@ -91,6 +91,10 @@ cat index-template.html > ./${INPUT_ALLURE_HISTORY}/index.html
 # Get Latest results
 echo "├── <a href="./${INPUT_GITHUB_RUN_NUM}/index.html">Latest Test Results - RUN ID: ${INPUT_GITHUB_RUN_NUM}</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html;
 
+# Pointer to snowman directory
+# https://us-east-1.console.aws.amazon.com/s3/buckets/spqatestresults2?region=us-east-1&bucketType=general&prefix=snowman/&showversions=false
+echo "├── <a href="https://${AWS_S3_BUCKET}.s3.amazonaws.com/snowman">Snowman Results Directory</a><br>" >> ./${INPUT_ALLURE_HISTORY}/index.html;
+
 # Sort results by project and with the snowman project, sort by component
 sh -c "aws s3 ls s3://${AWS_S3_BUCKET}" |  grep "PRE" | sed 's/PRE //' | sed 's/.$//' | sort -nr | while read line; do
     if [ ${line} = 'latest' ]; then
